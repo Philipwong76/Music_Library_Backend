@@ -16,3 +16,13 @@ def song_list(request):
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['GET'])
+def song_detail(request, pk):
+    try:
+        song = Song.objects.get(pk=pk)
+        serializer = MusicSerializer(song);
+        return Response(serializer.data)
+        
+    except Song.DoesNotExist:    
+        return Response(status=status.HTTP_404_NOT_FOUND);
